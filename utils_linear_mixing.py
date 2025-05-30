@@ -9,19 +9,19 @@ from sklearn.datasets import fetch_openml
 
 # Utility functions: find optimal noise for eps Renyi DP
 # Define the function to minimize
-def objective_func_full(alpha, k, d, n, sigma1, sigma2, delta,C_max):
-    if alpha <= 1 or alpha >= np.min((sigma1,sigma2))/(1+C_max):
+def objective_func_full(alpha, k, d, n, sigma, delta,C_max):
+    if alpha <= 1 or alpha >= sigma/(1+C_max):
         return np.inf  # Penalize out-of-bound values
 
-    # term1 = (k * alpha) / (2 * (alpha - 1)) * np.log(1.0 - (1.0 + C_max) / (n*(1.0 + C_max) + np.max((sigma1, sigma2))))
-    term1 = (k * alpha) / (2 * (alpha - 1)) * np.log(1.0 - (1.0 + C_max) / (np.max((sigma1, sigma2))))
-    term2 = - (k / (2 * (alpha - 1))) * np.log(1 - (alpha*(1 + C_max)) / np.min((sigma1,sigma2)))
+    # term1 = (k * alpha) / (2 * (alpha - 1)) * np.log(1.0 - (1.0 + C_max) / (n*(1.0 + C_max) + sigma))
+    term1 = (k * alpha) / (2 * (alpha - 1)) * np.log(1.0 - (1.0 + C_max) / (sigma))
+    term2 = - (k / (2 * (alpha - 1))) * np.log(1 - (alpha*(1 + C_max)) / sigma)
     term3 = (np.log(3.0 / delta) + (alpha - 1)*np.log(1-1/alpha) - np.log(alpha)) / (alpha - 1)
-    term4 = np.sqrt(2.0 * np.log(3.75/delta)) / (sigma1/np.sqrt(k))
+    term4 = np.sqrt(2.0 * np.log(3.75/delta)) / (sigma/np.sqrt(k))
     return term1 + term2 + term3 + term4
 
 # Solve with full conversion from RenyiDP to DP for the Linear mixing algorithm
-def solve_sigma_renyi_full(sigma_DP, n_prime, d, n, delta, target_epsilon, C_max, ratio_sigma1_sigma2):   
+def solve_sigma_renyi_full(sigma_DP, n_prime, d, n, delta, target_epsilon, C_max):   
     # Define binary search bounds
     left, right = sigma_DP / 30000.0, 30000.0*sigma_DP
     best_sigma = right  # Default to upper bound in case no solution is found
@@ -30,7 +30,7 @@ def solve_sigma_renyi_full(sigma_DP, n_prime, d, n, delta, target_epsilon, C_max
         # Solve for optimal alpha given the current sigma
         result = scipy.optimize.minimize_scalar(objective_func_full, 
                                  bounds=(1 + 1e-5, mid_sigma - 1e-5), 
-                                 args=(n_prime, d, n, mid_sigma, mid_sigma/ratio_sigma1_sigma2, delta,C_max), 
+                                 args=(n_prime, d, n, mid_sigma, mid_sigma, delta,C_max), 
                                  method='bounded')
         if result.success and result.fun < target_epsilon:
             best_sigma = mid_sigma  # Update best found sigma
@@ -40,19 +40,19 @@ def solve_sigma_renyi_full(sigma_DP, n_prime, d, n, delta, target_epsilon, C_max
     return best_sigma
 
 # Define the function to minimize
-def objective_func(alpha, k, d, n, sigma1, sigma2, delta,C_max):
-    if alpha <= 1 or alpha >= np.min((sigma1,sigma2))/(1+C_max):
+def objective_func(alpha, k, d, n, sigma, delta,C_max):
+    if alpha <= 1 or alpha >= sigma/(1+C_max):
         return np.inf  # Penalize out-of-bound values
 
-    # term1 = (k * alpha) / (2 * (alpha - 1)) * np.log(1.0 - (1.0 + C_max) / (n*(1.0 + C_max) + np.max((sigma1, sigma2))))
-    term1 = (k * alpha) / (2 * (alpha - 1)) * np.log(1.0 - (1.0 + C_max) / (np.max((sigma1, sigma2))))
-    term2 = - (k / (2 * (alpha - 1))) * np.log(1 - (alpha*(1 + C_max)) / np.min((sigma1,sigma2)))
+    # term1 = (k * alpha) / (2 * (alpha - 1)) * np.log(1.0 - (1.0 + C_max) / (n*(1.0 + C_max) + sigma))
+    term1 = (k * alpha) / (2 * (alpha - 1)) * np.log(1.0 - (1.0 + C_max) / (sigma))
+    term2 = - (k / (2 * (alpha - 1))) * np.log(1 - (alpha*(1 + C_max)) / sigma)
     term3 = (np.log(1.0 / delta) + (alpha - 1)*np.log(1-1/alpha) - np.log(alpha)) / (alpha - 1)
     return term1 + term2 + term3
 
 # Solve with full conversion from RenyiDP to DP with the classical conversion from 
 # RenyiDP to DP 
-def solve_sigma_renyi(sigma_DP, n_prime, d, n, delta, target_epsilon, C_max, ratio_sigma1_sigma2):   
+def solve_sigma_renyi(sigma_DP, n_prime, d, n, delta, target_epsilon, C_max):   
     # Define binary search bounds
     left, right = sigma_DP / 30000.0, 30000.0*sigma_DP
     best_sigma = right  # Default to upper bound in case no solution is found
@@ -61,7 +61,7 @@ def solve_sigma_renyi(sigma_DP, n_prime, d, n, delta, target_epsilon, C_max, rat
         # Solve for optimal alpha given the current sigma
         result = scipy.optimize.minimize_scalar(objective_func, 
                                  bounds=(1 + 1e-5, mid_sigma - 1e-5), 
-                                 args=(n_prime, d, n, mid_sigma, mid_sigma/ratio_sigma1_sigma2, delta,C_max), 
+                                 args=(n_prime, d, n, mid_sigma, mid_sigma, delta,C_max), 
                                  method='bounded')
         if result.success and result.fun < target_epsilon:
             best_sigma = mid_sigma  # Update best found sigma
