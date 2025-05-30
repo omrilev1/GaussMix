@@ -277,8 +277,8 @@ def GetDataset(dataset_name):
 
     # Synthetic dataset with uniform covariates matrix 
     elif dataset_name == 'synthetic_Uniform':
-        n_samples = 2**13 # 2**10
-        n_features = 2**9 # 2**8 # 2**9
+        n_samples = 2**13 + 2**11 
+        n_features = 2**9 
 
         w_star = np.random.randn(n_features)
         w_star /= np.linalg.norm(w_star)  # Normalize to have ||w*||=1
@@ -316,8 +316,8 @@ def GetDataset(dataset_name):
 # Synthetic Gaussian dataset 
     elif dataset_name == 'synthetic_Gaussian':
         # number of samples and features
-        n_samples = 2**13# 2**10
-        n_features = 2**9 # 2**9
+        n_samples = 2**13 + 2**11
+        n_features = 2**9 
 
         w_star = np.random.randn(n_features)
         w_star /= np.linalg.norm(w_star)  # Normalize to have ||w*||=1
@@ -361,7 +361,7 @@ def GetDataset(dataset_name):
     # Synthetic dataset with MLP features and continuous responses 
     elif dataset_name == 'synthetic_MLP':
         # Set parameters
-        n_samples = 2**13
+        n_samples = 2**13 + 2**11
         n_features = 2
         layer_sizes = [2**9, 2**9, 2**9] # [100, 100, 100]
         mu, sigma = 1, 1  # For lognormal distribution
