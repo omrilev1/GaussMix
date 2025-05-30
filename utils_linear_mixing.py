@@ -30,7 +30,7 @@ def solve_sigma_renyi_full(sigma_DP, n_prime, d, n, delta, target_epsilon, C_max
         # Solve for optimal alpha given the current sigma
         result = scipy.optimize.minimize_scalar(objective_func_full, 
                                  bounds=(1 + 1e-5, mid_sigma - 1e-5), 
-                                 args=(n_prime, d, n, mid_sigma, mid_sigma, delta,C_max), 
+                                 args=(n_prime, d, n, mid_sigma, delta,C_max), 
                                  method='bounded')
         if result.success and result.fun < target_epsilon:
             best_sigma = mid_sigma  # Update best found sigma
@@ -61,7 +61,7 @@ def solve_sigma_renyi(sigma_DP, n_prime, d, n, delta, target_epsilon, C_max):
         # Solve for optimal alpha given the current sigma
         result = scipy.optimize.minimize_scalar(objective_func, 
                                  bounds=(1 + 1e-5, mid_sigma - 1e-5), 
-                                 args=(n_prime, d, n, mid_sigma, mid_sigma, delta,C_max), 
+                                 args=(n_prime, d, n, mid_sigma, delta,C_max), 
                                  method='bounded')
         if result.success and result.fun < target_epsilon:
             best_sigma = mid_sigma  # Update best found sigma
