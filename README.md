@@ -19,5 +19,25 @@ Linear Regression Experiments – Required Packages:
   urllib3 (v2.2.2)
 ```
 
-Logistic Regression Experiments:
-  The notebook Code_LogisticRegression.ipynb can be run directly in Google Colab.
+Logistic Regression Experiments – Required Packages:
+```
+    numpy (v1.24.4)
+    matplotlib (v3.10.0)
+    opacus (v1.5.4)
+    optuna (v4.3.0)
+    scikit-learn (v1.6.1)
+    tqdm (v4.67.1)
+    scipy (v1.15.3)
+    torch (v2.6.0)
+    torchvision (v0.21.0)
+    pandas (v2.2.2)
+    urllib3 (v2.4.0)
+```
+
+
+
+
+
+
+
+
