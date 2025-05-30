@@ -69,14 +69,14 @@ for eps_idx, eps in tqdm(enumerate(epsilon_values)):
     ############ Ours ##############
     sigma_DP = 2.0 * np.log(1.25/delta_DP) / (eps**2)
     ratio_sigma1_sigma2 = 1.0
-    sigma_matrix = solve_sigma_renyi_full(sigma_DP, k_val, d, n, delta_DP, eps, C_max**2, ratio_sigma1_sigma2)
+    sigma_matrix = solve_sigma_renyi_full(sigma_DP, k_val, d, n, delta_DP, eps, C_max**2)
     sigma_eigenval = sigma_matrix/np.sqrt(k_val)
     
     ########### Sheffet's method ##############
     sigma_matrix_sheffet = 4.0 * (np.sqrt(2.0 * k_val * np.log(8.0/(delta_DP))) + np.log(8.0/(delta_DP)))/(eps)
     
     ########### Sheffet's method, our bound ##############
-    sigma_matrix_sheffet_ours = solve_sigma_renyi(sigma_DP, k_val, d, n, delta_DP, eps/2.0, C_max**2, ratio_sigma1_sigma2)
+    sigma_matrix_sheffet_ours = solve_sigma_renyi(sigma_DP, k_val, d, n, delta_DP, eps/2.0, C_max**2)
         
     ########### AdaSSP: calculate noisy minimum eigenvalue ##############
     lambda_min_tilde = np.max((0, lambda_min + np.sqrt(np.log(6.0/delta_DP))/(eps/3.0) * np.random.randn() / 
