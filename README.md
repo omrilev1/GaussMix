@@ -8,7 +8,7 @@ Figures:
   
   o Figure 3 & Figure 5: Run Code_LogisticRegression.ipynb and select the corresponding dataset.
 
-Linear Regression Experiments – Required Packages:
+Linear regression experiments – required packages:
 ```
   NumPy (v1.26.4)
   SciPy (v1.14.1)
@@ -19,7 +19,7 @@ Linear Regression Experiments – Required Packages:
   urllib3 (v2.2.2)
 ```
 
-Logistic Regression Experiments – Required Packages:
+Logistic regression experiments – required packages:
 ```
     numpy (v1.24.4)
     matplotlib (v3.10.0)
