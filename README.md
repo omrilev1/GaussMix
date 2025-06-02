@@ -1,8 +1,10 @@
 # GaussMix
-  Supporting code for the paper: "The Gaussian Mixing Mechanism: Renyi Differential Privacy via Gaussian Sketches"
+Supporting code for the paper: "The Gaussian Mixing Mechanism: Renyi Differential Privacy via Gaussian Sketches"
 
-Figures:
+Paper link: https://arxiv.org/pdf/2505.24603
 
+
+To generate the figures in the paper: 
   o Figure 1: Run AnalyticalAnalysis_GaussMix_Renyi.ipynb.
   
   o Figure 2 & Figure 4: Run Code_LinearRegression.py and select the corresponding dataset.
