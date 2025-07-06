@@ -79,9 +79,9 @@ for eps_idx, eps in tqdm(enumerate(epsilon_values)):
     sigma_matrix_sheffet_ours = solve_sigma_renyi(sigma_DP, k_val, d, n, delta_DP, eps/2.0, C_max**2)
         
     ########### AdaSSP: calculate noisy minimum eigenvalue ##############
-    lambda_min_tilde = np.max((0, lambda_min + np.sqrt(np.log(6.0/delta_DP))/(eps/3.0) * np.random.randn() / 
+    _tilde = np.max((0,  + np.sqrt(np.log(6.0/delta_DP))/(eps/3.0) * np.random.randn() / 
                               - (np.log(6.0/delta_DP))/(eps/3.0)))
-    lambda_adassp = np.max((0, np.sqrt(d * np.log(6.0/delta_DP) * np.log(2.0*(d**2)/(0.0001)))/(eps/3.0) - lambda_min_tilde))
+    lambda_adassp = np.max((0, np.sqrt(d * np.log(6.0/delta_DP) * np.log(2.0*(d**2)/(0.0001)))/(eps/3.0) - _tilde))
         
     if print_noise_values:
         print('sigma_DP is: ' + str(n * d * sigma_DP))
@@ -107,7 +107,7 @@ for eps_idx, eps in tqdm(enumerate(epsilon_values)):
             X_train_full_PR = S @ X_train + np.sqrt(sigma_matrix) * N_ours  
             y_PR = (S @ y_train_vec).ravel() + np.sqrt(sigma_matrix) * N_ours_y
         else:        
-            gamma_tilde = np.max((0, lambda_min - np.sqrt(sigma_eigenval) * (tau - np.random.randn())))
+            gamma_tilde = np.max((0, lambda_min_XY - np.sqrt(sigma_eigenval) * (tau - np.random.randn())))
             sigma_tilde = np.sqrt(np.max((0, sigma_matrix - gamma_tilde)))
             X_train_full_PR = S @ X_train + sigma_tilde * N_ours  # (n_prime,d)
             y_PR = (S @ y_train_vec).ravel() + sigma_tilde * N_ours_y
@@ -120,7 +120,7 @@ for eps_idx, eps in tqdm(enumerate(epsilon_values)):
 
         z = np.random.laplace(loc=0.0, scale=4.0/(eps))
         
-        if lambda_min > W2 + z + 4.0 * np.log(1/(delta_DP))/(eps):
+        if lambda_min_XY > W2 + z + 4.0 * np.log(1/(delta_DP))/(eps):
             X_train_full_PR_sheffet = S_sheffet @ X_train
             y_PR_sheffet = (S_sheffet @ y_train_vec).ravel()
         else:
@@ -134,7 +134,7 @@ for eps_idx, eps in tqdm(enumerate(epsilon_values)):
         W2 = sigma_matrix_sheffet_ours/2
         z = np.random.laplace(loc=0.0, scale=4.0/(eps))
         
-        if lambda_min > W2 + z + 4.0 * np.log(1/(delta_DP))/(eps):
+        if lambda_min_XY > W2 + z + 4.0 * np.log(1/(delta_DP))/(eps):
             X_train_full_PR_sheffet = S_sheffet @ X_train
             y_PR_sheffet = (S_sheffet @ y_train_vec).ravel()
         else:
