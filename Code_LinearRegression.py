@@ -79,9 +79,9 @@ for eps_idx, eps in tqdm(enumerate(epsilon_values)):
     sigma_matrix_sheffet_ours = solve_sigma_renyi(sigma_DP, k_val, d, n, delta_DP, eps/2.0, C_max**2)
         
     ########### AdaSSP: calculate noisy minimum eigenvalue ##############
-    _tilde = np.max((0,  + np.sqrt(np.log(6.0/delta_DP))/(eps/3.0) * np.random.randn() / 
+    lambda_min_tilde = np.max((0,  + np.sqrt(np.log(6.0/delta_DP))/(eps/3.0) * np.random.randn() / 
                               - (np.log(6.0/delta_DP))/(eps/3.0)))
-    lambda_adassp = np.max((0, np.sqrt(d * np.log(6.0/delta_DP) * np.log(2.0*(d**2)/(0.0001)))/(eps/3.0) - _tilde))
+    lambda_adassp = np.max((0, np.sqrt(d * np.log(6.0/delta_DP) * np.log(2.0*(d**2)/(0.0001)))/(eps/3.0) - lambda_min_tilde))
         
     if print_noise_values:
         print('sigma_DP is: ' + str(n * d * sigma_DP))
