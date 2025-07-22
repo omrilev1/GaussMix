@@ -43,7 +43,7 @@ print('============================')
 
 # Hyperparameter: k 
 percentage_k = 2.5 # [1.5]
-k_val = int(percentage_k * d)  # Three different projection dimensions    
+k_val = int(percentage_k * d)     
 
 # Number of Monte-Carlo iterations
 iters = 250 
