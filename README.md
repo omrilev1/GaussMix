@@ -38,6 +38,7 @@ Logistic regression experiments – required packages:
     urllib3 (v2.4.0)
 ```
 
+To run experiments on Slice, HouseElectric, and Buzz, download the datasets from https://github.com/treforevans/uci_datasets/tree/master/uci_datasets, convert them to .txt, and place the files in the Datasets/ folder. 
 
 
 
